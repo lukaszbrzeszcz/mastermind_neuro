@@ -1,3 +1,4 @@
+#! /usr/bin/python
 import pygame, sys
 import mastermind as mm
 import numpy as np
@@ -12,6 +13,3 @@ while True:
             sys.exit(0)
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             sys.exit(0)
-    show_legend()
-
-
