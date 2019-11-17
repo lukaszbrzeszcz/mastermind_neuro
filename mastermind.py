@@ -13,7 +13,7 @@ class Mastermind:
         self.win = False
 
     def board(self):
-        return board
+        return self.board
 
     def show(self):
         print('')
@@ -92,7 +92,27 @@ class Mastermind:
         hint = hint + [0]*(self.cols - len(hint))
         return hint
 
+    def play_bot(self, bot):
+        self.show()
+        while(self.round >= 0):
+            current_solution = bot.think(self.board, self.hints)
+            self.board[self.round] = current_solution
+            hint = self.get_hint()
+            self.hints[self.round] = hint
+            self.show()
+            if current_solution == self.solution:
+                self.win = True
+                break
+            else:
+                print("WRONG!")
+            self.round -= 1
+        if self.win:
+            print("YOU WON!")
+        else:
+            print("GAME OVER!!!")
+            print("Correct solution: {}".format(self.solution))
 
-mm = Mastermind(4,8,[random.randint(1,8) for i in range(4)])
-#mm = Mastermind(4,8,[1,2,3,4])
-mm.play()
+if __name__ == "__main__":
+    mm = Mastermind(4,8,[random.randint(1,8) for i in range(4)])
+    #mm = Mastermind(4,8,[1,2,3,4])
+    mm.play()

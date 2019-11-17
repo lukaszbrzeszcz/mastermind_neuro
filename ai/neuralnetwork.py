@@ -5,14 +5,11 @@ import tensorflow as tf
 from tensorflow import keras
 
 
-def build_model(input_data, output_data_size):
+def build_model(input_dim, output_data_size) -> keras.Sequential:
     model = keras.Sequential(
         [
-            keras.layers.Dense(
-                len(input_data), activation="relu", input_shape=input_data
-            ),
-            keras.layers.Dense(64, activation="relu"),
-            keras.layers.Dense(output_data_size),
+            keras.layers.Dense(16, activation="relu", input_dim=input_dim),
+            keras.layers.Dense(output_data_size, activation="sigmoid"),
         ]
     )
 
