@@ -3,9 +3,13 @@ import numpy as np
 
 
 class Bot:
-    def __init__(self, col, rows, input_range):
-        self.brain = nn.build_model(col * 2 * rows, input_range * rows)
+    def __init__(self, col, rows, input_range, brain=None):
+        if brain:
+            self.brain = brain
+        else:
+            self.brain = nn.build_model(col * 2 * rows, input_range * rows)
         self.input_range = input_range
+        self.score = 0
         # output:
         # _ -> 8
         # _ -> 8

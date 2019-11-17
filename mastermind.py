@@ -92,7 +92,7 @@ class Mastermind:
         hint = hint + [0]*(self.cols - len(hint))
         return hint
 
-    def play_bot(self, bot):
+    def play_bot(self, bot, show_board=True, win_show=True):
         # self.show()
         while(self.round >= 0):
             current_solution = bot.think(self.board, self.hints)
@@ -106,14 +106,18 @@ class Mastermind:
             # else:
                 # print("WRONG!")
             self.round -= 1
-        self.show()
-        if self.win:
-            print("YOU WON!")
-        else:
-            print("GAME OVER!!!")
-            print("Correct solution: {}".format(self.solution))
+        if show_board:
+            self.show()
+            if self.win:
+                print("YOU WON!")
+            else:
+                print("GAME OVER!!!")
+                print("Correct solution: {}".format(self.solution))
+        if self.win and win_show:
+            self.show()
         score = sum(np.resize(self.hints, (1, self.hints.size))[0])
         return self.cols*self.rows*8 if self.win else score
+
 
 if __name__ == "__main__":
     mm = Mastermind(4,8,[random.randint(1,8) for i in range(4)])
