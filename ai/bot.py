@@ -19,6 +19,7 @@ class Bot:
 
     def think(self, board, hints_board):
         game_board = np.concatenate((board, hints_board))
+        game_board = game_board/self.input_range
         nn_input = np.resize(game_board, (1, game_board.size))
         prediction_result = list(self.brain.predict(nn_input)[0])
         position_1 = round(prediction_result[0]*self.input_range)
