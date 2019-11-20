@@ -116,7 +116,8 @@ class Mastermind:
         if self.win and win_show:
             self.show()
         score = sum(np.resize(self.hints, (1, self.hints.size))[0])
-        return self.cols*self.rows*8 if self.win else score
+        # return self.cols*self.rows*8 if self.win else score
+        return self.hints
 
 
 if __name__ == "__main__":
