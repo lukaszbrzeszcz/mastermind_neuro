@@ -19,6 +19,10 @@ class Brain:
             layers_weights.append(weights)
         return layers_weights
 
+    def set_weights(self, new_weights):
+        for i, layer in enumerate(self.nn_model.layers):
+            layer.set_weights(new_weights[i])
+
     def __build_model(self) -> keras.Sequential:
         model = keras.Sequential(
             [
