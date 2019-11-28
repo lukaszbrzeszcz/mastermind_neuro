@@ -19,7 +19,7 @@ class Bot:
         # _ -> 8
 
     def think(self, board, hints_board):
-        game_board = np.concatenate((board / self.input_range, hints_board / 2))    # normalize input
+        game_board = np.concatenate((board / float(self.input_range), hints_board / 2.0))    # normalize input
         nn_input = np.resize(game_board, (1, game_board.size))
         prediction_result = list(self.brain.nn_model.predict(nn_input)[0])
         position_1 = math.ceil(prediction_result[0] * self.input_range)
