@@ -39,6 +39,11 @@ def crossover_layers_weights(bots_list):
         layers_weights_2[i][0] = np.array(layer_weights_2).reshape(layer_shape[0], layer_shape[1])
     return layers_weights, layers_weights_2
 
+def mutate_weights(l1, l2):
+    l1, l2 = l1.copy(), l2.copy()
+    l1[0][0][random.randint(0,16)] *= 1 + np.random.randn()
+    l2[0][0][random.randint(0,16)] *= 1 + np.random.randn()
+    return l1, l2
 
 def make_next_generation(bots_lists):
     new_bots_list = []
@@ -49,6 +54,7 @@ def make_next_generation(bots_lists):
         bot = Bot(4, 8, 8)
         bot_2 = Bot(4, 8, 8)
         layer_weights, layer_weights_2 = crossover_layers_weights(two_best)
+        layer_weights, layer_weights_2 = mutate_weights(layer_weights, layer_weights_2)
         bot.brain.set_weights(layer_weights)
         bot_2.brain.set_weights(layer_weights_2)
         new_bots_list.append(bot)
