@@ -6,19 +6,31 @@ import random
 
 
 def play_game(bots_list):
-    mm = Mastermind(4, 8, [random.randint(1, 8) for i in range(4)])
+    solution = [random.randint(1, 8) for i in range(4)]
     for bot in bots_list:
+        mm = Mastermind(4, 8, solution)
         hints_table = mm.play_bot(bot, show_board=False)
         bot.score = fitness_function(hints_table)
+
+
+def shake(bot):
+    layers_weights = bot.brain.get_weights()
+    for layer in range(len(layers_weights)):
+        for x in range(len(layers_weights[layer])):
+            for y in range(len(layers_weights[layer][x])):
+                layers_weights[layer][x][y] *= (10 * np.random.randn() + 1)
+    bot.brain.set_weights(layers_weights)
 
 
 def make_population(n):
     bots_list = []
     for x in range(n):
         bot = Bot(4, 8, 8)
+
         # mm = Mastermind(4, 8, [random.randint(1, 8) for i in range(4)])
         # hints_table = mm.play_bot(bot, show_board=False)
         # bot.score = fitness_function(hints_table)
+        shake(bot)
         bots_list.append(bot)
 
     return bots_list
@@ -41,8 +53,8 @@ def crossover_layers_weights(bots_list):
 
 def mutate_weights(l1, l2):
     l1, l2 = l1.copy(), l2.copy()
-    l1[0][0][random.randint(0,16)] *= 1 + np.random.randn()
-    l2[0][0][random.randint(0,16)] *= 1 + np.random.randn()
+    l1[0][0][random.randint(0,16)] *= 1 + np.random.randn() * 10
+    l2[0][0][random.randint(0,16)] *= 1 + np.random.randn() * 10
     return l1, l2
 
 def make_next_generation(bots_lists):
@@ -57,6 +69,8 @@ def make_next_generation(bots_lists):
         layer_weights, layer_weights_2 = mutate_weights(layer_weights, layer_weights_2)
         bot.brain.set_weights(layer_weights)
         bot_2.brain.set_weights(layer_weights_2)
+        #shake(bot)
+        #shake(bot_2)
         new_bots_list.append(bot)
         new_bots_list.append(bot_2)
     new_bots_list.append(two_best[0])
@@ -86,6 +100,7 @@ def fitness_function(hints_table):
 if __name__ == "__main__":
     bots_list = make_population(100)
     play_game(bots_list)
+    print([bot.score for bot in bots_list])
     scores = []
     print("Max score: ", max(bot.score for bot in bots_list))
     # print(bots_list[0].brain.get_weights()[0][1])
@@ -93,6 +108,7 @@ if __name__ == "__main__":
         bots_list = make_next_generation(bots_list)
         play_game(bots_list)
         max_score = max(bot.score for bot in bots_list)
+        print([bot.score for bot in bots_list])
         print("Max score: ", max_score)
         scores.append(max_score)
     print(max(scores))

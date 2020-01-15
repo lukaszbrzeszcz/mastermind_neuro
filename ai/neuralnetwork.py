@@ -8,7 +8,7 @@ from tensorflow import keras
 class Brain:
     def __init__(self, input_size, output_size):
         self.input_size = input_size
-        self.output_size = output_size
+        self.output_size = output_size * 8
         self.nn_model = None
         self.__build_model()
 
@@ -26,8 +26,9 @@ class Brain:
     def __build_model(self) -> keras.Sequential:
         model = keras.Sequential(
             [
-                keras.layers.Dense(16, activation="relu", input_dim=self.input_size),
-                keras.layers.Dense(self.output_size, activation="sigmoid"),
+                keras.layers.Dense(64, activation="relu", input_dim=self.input_size),
+                keras.layers.Dense(64),
+                keras.layers.Dense(self.output_size, activation="relu"),
             ]
         )
 

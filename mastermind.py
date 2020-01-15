@@ -94,8 +94,11 @@ class Mastermind:
 
     def play_bot(self, bot, show_board=True, win_show=True):
         # self.show()
+        #print("Start playing bot: ", bot.name)
+        random_input = True
         while(self.round >= 0):
-            current_solution = bot.think(self.board, self.hints)
+            current_solution = bot.think(self.board, self.hints, random_input)
+            random_input = False
             self.board[self.round] = current_solution
             hint = self.get_hint()
             self.hints[self.round] = hint
