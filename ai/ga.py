@@ -91,7 +91,7 @@ def fitness_function(hints_table):
     if winner:
         # winning round: 8 -> *(8-7+1) -> *2
         return sum(np.resize(hints_table, (1, hints_table.size))[0]) * (
-            winning_round
+            winning_round + 1
         )
     else:
         return sum(np.resize(hints_table, (1, hints_table.size))[0])
