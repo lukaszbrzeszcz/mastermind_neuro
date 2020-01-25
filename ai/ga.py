@@ -91,7 +91,7 @@ def fitness_function(hints_table):
     if winner:
         # winning round: 8 -> *(8-7+1) -> *2
         return sum(np.resize(hints_table, (1, hints_table.size))[0]) * (
-            rounds - winning_round + 1
+            winning_round
         )
     else:
         return sum(np.resize(hints_table, (1, hints_table.size))[0])
@@ -112,6 +112,7 @@ if __name__ == "__main__":
         print("Max score: ", max_score)
         scores.append(max_score)
     print(max(scores))
+
 
 
     # print(bots_list[0].brain.get_weights())

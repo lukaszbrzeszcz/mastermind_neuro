@@ -28,7 +28,7 @@ class Brain:
             [
                 keras.layers.Dense(64, activation="relu", input_dim=self.input_size),
                 keras.layers.Dense(64),
-                keras.layers.Dense(self.output_size, activation="relu"),
+                keras.layers.Dense(self.output_size, activation="sigmoid"),
             ]
         )
 
