@@ -1,6 +1,7 @@
 #! /usr/bin/python3
 import numpy as np
 import random
+import math
 
 class Mastermind:
     def __init__(self, cols, rows, solution):
@@ -99,6 +100,45 @@ class Mastermind:
         while(self.round >= 0):
             current_solution = bot.think(self.board, self.hints, random_input)
             random_input = False
+            self.board[self.round] = current_solution
+            hint = self.get_hint()
+            self.hints[self.round] = hint
+            # self.show()
+            if current_solution == self.solution:
+                self.win = True
+                break
+            # else:
+                # print("WRONG!")
+            self.round -= 1
+        if show_board:
+            self.show()
+            if self.win:
+                print("YOU WON!")
+            else:
+                print("GAME OVER!!!")
+                print("Correct solution: {}".format(self.solution))
+        if self.win and win_show:
+            self.show()
+        score = sum(np.resize(self.hints, (1, self.hints.size))[0])
+        # return self.cols*self.rows*8 if self.win else score
+        return self.hints
+
+    def play_neat_bot(self, neat_net, show_board=True, win_show=True):
+        random_input = True
+        while(self.round >= 0):
+            # current_solution = bot.think(self.board, self.hints, random_input)
+            game_board = np.concatenate((self.board/8, self.hints/2))# normalize input
+            nn_input = [x for y in game_board.tolist() for x in y]
+            prediction_result = neat_net.activate(nn_input)
+            # position_1 = prediction_result[0:8].index(max(prediction_result[0:8])) + 1
+            # position_2 = prediction_result[9:17].index(max(prediction_result[9:17])) + 1
+            # position_3 = prediction_result[18:26].index(max(prediction_result[18:26])) + 1
+            # position_4 = prediction_result[27:35].index(max(prediction_result[27:35])) + 1
+            position_1 = math.ceil(prediction_result[0] * 8)
+            position_2 = math.ceil(prediction_result[1] * 8)
+            position_3 = math.ceil(prediction_result[2] * 8)
+            position_4 = math.ceil(prediction_result[3] * 8)
+            current_solution = [position_1, position_2, position_3, position_4]
             self.board[self.round] = current_solution
             hint = self.get_hint()
             self.hints[self.round] = hint
