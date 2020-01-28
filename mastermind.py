@@ -167,12 +167,13 @@ class Mastermind:
         return self.hints
 
     def play_swaszek(self, show_board = True, show_win = True):
-        print("                             ")
-        print("      Swaszek Algorithm      ")
-        print("=============================")
-        print("                             ")
-        print("Correct answer: %s" % (str(self.solution)))
-        print("                             ")
+        if show_board:
+            print("                             ")
+            print("      Swaszek Algorithm      ")
+            print("=============================")
+            print("                             ")
+            print("Correct answer: %s" % (str(self.solution)))
+            print("                             ")
         colors = range(1, self.max_number+1)
         colors_mult = []
         for i in range(self.cols):
@@ -183,25 +184,30 @@ class Mastermind:
         current_solution = [1,1,2,2]
         self.board[self.round] = current_solution
         while (self.round >= 0):
-            print("                             ")
-            print("     Round: %d" % (self.rows - self.round))
-            print("-------------------")
-            print("Possibilities: %s" % (len(s)))
-            print("Guess: %s" % (str(current_solution)))
             hint = self.get_hint()
-            print(" Hint: %s" % (str(hint)))
+            if show_board:
+                print("                             ")
+                print("     Round: %d" % (self.rows - self.round))
+                print("-------------------")
+                print("Possibilities: %s" % (len(s)))
+                print("Guess: %s" % (str(current_solution)))
+                print(" Hint: %s" % (str(hint)))
             self.hints[self.round] = hint
             self.round -= 1
             if hint == [2,2,2,2]:
                 self.win = True
-                print("      SUCCESS")
-                break
+                if show_win:
+                    print("      SUCCESS")
+                return self.rows - self.round - 1
             else:
-                print("     Wrong...")
+                if show_board:
+                    print("     Wrong...")
+                    print("")
                 s = test_code(current_solution, s, hint)
-                print("")
                 current_solution = list(random.choice(s))
                 self.board[self.round] = current_solution
+        if not self.win:
+            return -1
 
 def test_code(cur_sol, solutions, hint):
     s = list()
